@@ -6,7 +6,7 @@
                     <b-th>Curso</b-th>
                     <b-th>Cupos</b-th>
                     <b-th>Inscritos</b-th>
-                    <b-th>Duración</b-th>
+                    <b-th>Duración (M)</b-th>
                     <b-th>Costo</b-th>
                     <b-th>Terminado</b-th>
                     <b-th>Fecha</b-th>

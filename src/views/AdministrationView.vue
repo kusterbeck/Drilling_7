@@ -3,12 +3,7 @@
        <b-container>
             <h1 class="my-5">Administración</h1>
             <div>
-                <b-button v-b-modal.modal-center variant="primary" class="mb-5">
-                    <strong>AGREGAR CURSO</strong>
-                </b-button>
-                <b-modal id="modal-center" centered title="BootstrapVue">
-                    <p class="my-4">Vertically centered modal!</p>
-                </b-modal>
+                <ModalFormComponent/>
             </div>
             <TableComponent/>
             <SummaryComponent/>
@@ -19,10 +14,14 @@
 <script>
 import TableComponent from '@/components/TableComponent.vue'
 import SummaryComponent from '@/components/SummaryComponent.vue'
+import ModalFormComponent from '@/components/ModalFormComponent.vue'
 
 export default {
     name: "AdministrationView",
-    components: {TableComponent, SummaryComponent}
+    components: {TableComponent, SummaryComponent, ModalFormComponent},
+    methods: {
+        
+    }
 }
 </script>
 
