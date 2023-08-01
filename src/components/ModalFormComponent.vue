@@ -1,45 +1,41 @@
-<template>
+<template >
     <div>
-        <b-button id="show-btn" @click="showModal" variant="primary" class="mb-5"><strong>AGREGAR CURSO</strong></b-button>
-        <b-modal ref="my-modal" hide-footer hide-header-close title="Formulario Curso Nuevo">
-
-                <div class="d-block text-center">
-                    <b-form-input class="my-3" v-model="formulario.nombre" type="text"  placeholder="Nombre del Curso"></b-form-input>
-                    <b-form-input class="my-3" v-model="formulario.img" type="text"  placeholder="URL de imagen"></b-form-input>
-                    <b-form-input class="my-3" v-model.number="formulario.cupos" type="number"  placeholder="Cupos del curso"></b-form-input>
-                    <b-form-input class="my-3" v-model.number="formulario.inscritos" type="number" 
-                        placeholder="Inscritos del curso"></b-form-input>
-                    <b-form-input class="my-3" v-model.number="formulario.duracion" type="number"  placeholder="Duracion del curso"></b-form-input>
-                    <label for="example-datepicker" class="fecha ms-1">Fecha de registro</label>
-                    <b-form-input class="my-1" v-model="formulario.fecha_registro" type="date"  placeholder="Fecha de registro"></b-form-input>
-                    <b-form-input class="my-3" v-model.number="formulario.costo" type="number"  placeholder="Costo del curso"></b-form-input>
-                    <b-form-textarea rows="4" max-rows="6" class="my-3" v-model="formulario.descripcion" type="text" 
-                        placeholder="Descripción del curso"></b-form-textarea>
-                
-                </div>
-                        
-                    <b-button class="mt-2 mx-2 text-light" variant="outline-success bg-success" block @click="agregarCursoFormulario(formulario)" >
-                        <strong>AGREGAR</strong>
-                    </b-button>
-                    <b-button class="mt-2 mx-2 text-light" variant="outline-warning bg-warning" block @click="limpiarFormulario">
-                        <strong>LIMPIAR FORMULARIO</strong>
-                    </b-button>
-                    <b-button class="mt-2 mx-2 text-light" variant="outline-danger bg-danger" block @click="hideModal">
-                        <strong>CANCELAR</strong>
-                    </b-button>
-        </b-modal>
+        <div class="d-block text-center">
+            <b-form-input class="my-3" v-model="formulario.nombre" type="text"  placeholder="Nombre del Curso"></b-form-input>
+            <b-form-input class="my-3" v-model="formulario.img" type="text"  placeholder="URL de imagen"></b-form-input>
+            <b-form-input class="my-3" v-model.number="formulario.cupos" type="number"  placeholder="Cupos del curso"></b-form-input>
+            <b-form-input class="my-3" v-model.number="formulario.inscritos" type="number" 
+                placeholder="Inscritos del curso"></b-form-input>
+            <b-form-input class="my-3" v-model.number="formulario.duracion" type="number"  placeholder="Duracion del curso"></b-form-input>
+            <label for="example-datepicker" class="fecha ms-1">Fecha de registro</label>
+            <b-form-input class="my-1" v-model="formulario.fecha_registro" type="date"  placeholder="Fecha de registro"></b-form-input>
+            <b-form-input class="my-3" v-model.number="formulario.costo" type="number"  placeholder="Costo del curso"></b-form-input>
+            <b-form-textarea rows="4" max-rows="6" class="my-3" v-model="formulario.descripcion" type="text" 
+                placeholder="Descripción del curso"></b-form-textarea>
+        </div>
+            <b-button class="mt-2 mx-2 text-light" variant="outline-success bg-success" block @click="agregarCursoFormulario(formulario)" >
+                <strong>AGREGAR</strong>
+            </b-button>
+            <b-button class="mt-2 mx-2 text-light" variant="outline-warning bg-warning" block @click="limpiarFormulario">
+                <strong>LIMPIAR FORMULARIO</strong>
+            </b-button>
+            <b-button class="mt-2 mx-2 text-light" variant="outline-danger bg-danger" block @click="esconderModal">
+                <strong>CANCELAR</strong>
+            </b-button> 
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
+
 export default {
     name: 'ModalFormComponent',
+    
     data() {
         return {
             formulario: {
-            id: 7,
+            id: 6,
             nombre: '',
             img: '',
             cupos: '',
@@ -56,11 +52,8 @@ export default {
         ...mapState(["cursos"])
     },
     methods: {
-        showModal() {
-            this.$refs['my-modal'].show()
-        },
-        hideModal() {
-            this.$refs['my-modal'].hide()
+        esconderModal() {
+            this.$emit("hideModal");
         },
         limpiarFormulario() {
             this.formulario.nombre = '';
@@ -88,27 +81,9 @@ export default {
             if (this.formulario.costo > 100000 ) {
                 return alert('Esta es una institución publica, sea consciente del precio de sus cursos (máximo $100000)');
             }
-            let copiaFormulario = this.clone(formulario)
-            this.$store.dispatch("agregar_curso", copiaFormulario);
-            this.hideModal();
-            this.limpiarFormulario();
-        },
-        clone(obj) {
-            if (Array.isArray(obj)) {
-                let copy = [];
-                for (let i = 0; i < obj.length; i++) {
-                    copy.push(this.clone(obj[i]));
-                }
-                return copy;
-            } else if (typeof obj === 'object' && obj !== null) {
-                let copy = {};
-                for (let key in obj) {
-                    copy[key] = this.clone(obj[key]);
-                }
-                return copy;
-            } else {
-                return obj;
-            }
+            this.$store.dispatch("agregar_curso", formulario);
+            this.esconderModal();
+            this.formulario.id ++;
         },
     }
 

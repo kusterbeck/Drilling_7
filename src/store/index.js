@@ -79,6 +79,7 @@ export default new Vuex.Store({
         descripcion: 'Con SASS aprenderás a escribir mejor código de CSS contodas las funciones necesarias.'
       },
     ],
+    id_asignatura_id: null,
   },
   getters: {
     totalCupos: (state) => {
@@ -105,17 +106,44 @@ export default new Vuex.Store({
         }
       }
       return [cursosTerminados, cursosNoTerminados]
-    }
+    },
+    obtenerCursoPorId: (state) => (id) => {
+      return state.cursos.find((asignatura) => asignatura.id === id);
+    },
   },
   mutations: {
     AGREGAR_CURSO: (state, formulario) => {
       state.cursos.push(formulario);
+    },
+    EDITAR_CURSO: (state, cursoEdit) => {
+      let index =  state.cursos.findIndex((curso) => curso.id === cursoEdit.id);
+      state.cursos.splice(index, 1 , cursoEdit);
+      // Vue.set(state.cursos, index, cursoEdit);
+      state.id_asignatura_id = null;
+    },
+    MOSTRAR_ID_ASIGNATURA_ID: (state, id) => {
+      state.id_asignatura_id = id;
+    },
+    ELIMINAR_CURSO: (state, id) => {
+      let index =  state.cursos.findIndex((curso) => curso.id === id);
+      state.cursos.splice(index, 1)
     }
+    
   },
   actions: {
-    agregar_curso({commit}, formulario) {
-      commit("AGREGAR_CURSO", formulario);
+    agregar_curso ({commit}, formulario) {
+      commit("AGREGAR_CURSO", formulario)
     },
+    editar_curso ({commit}, cursoEdit) {
+      commit("EDITAR_CURSO", cursoEdit)
+    },
+    mostrar_id_asignatura_id ({commit}, id) {
+      commit("MOSTRAR_ID_ASIGNATURA_ID", id)
+    },
+    eliminar_curso ({commit}, id) {
+      commit("ELIMINAR_CURSO", id)
+    }
+    
   },
   modules: {
   }
